@@ -1,0 +1,8 @@
+*.zip
+*.tgz
+*.tar.gz
+tmp/*
+data/*
+!tmp/.gitkeep
+!data/.gitkeep
+outputs

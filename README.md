@@ -13,7 +13,7 @@ The aim of this repository is to develop an extremely lightweight (and understan
 
 ### Stage 1: Supervised training
 
-- [x] Add Lhotse's minimal working example with ESPNet to repository
+- [x] Add Lhotse's [minimal working example with ESPNet](https://colab.research.google.com/drive/1HKSYPsWx_HoCdrnLpaPdYj5zwlPsM3NH#scrollTo=nxHj0VFq4vxY) to repository
 - [ ] Modify ESPNet recipe for use with PyTorch lightning
   - [ ] Single GPU ok?
   - [ ] Multi-GPU ok?

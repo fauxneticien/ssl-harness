@@ -7,3 +7,9 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | d
     && apt install -y \
     gh \
     rclone
+
+# Staging area (commands yet to be verified)
+
+# conda install -y pytorch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 pytorch-cuda=11.8 -c pytorch -c nvidia
+
+# pip install pytorch-lightning==2.0.2 lhotse==1.14.0 espnet==202304 chainer==7.8.1
