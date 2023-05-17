@@ -64,8 +64,7 @@ def run_train(args):
         callbacks=callbacks,
         reload_dataloaders_every_n_epochs=1,
         val_check_interval=500,
-        check_val_every_n_epoch=None,
-        logger=logger
+        check_val_every_n_epoch=None
     )
 
     model = HuBERTFineTuneModule(
