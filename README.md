@@ -2,28 +2,37 @@
 
 A lightweight test harness for evaluating self-supervised models for speech (mainly HuBERT).
 
-## Motivation
+# Usage
 
-Pre-training code for wav2vec 2.0 and HuBERT is tightly integrated into the (sprawling) [fairseq](https://github.com/facebookresearch/fairseq) library.
-Implementations outside of fairseq are similarly integrated into larger, multi-purpose libraries ([s3prl](https://github.com/s3prl/s3prl), [SpeechBrain](https://github.com/speechbrain/speechbrain), etc.).
+## Download data
 
-The aim of this repository is to develop an extremely lightweight (and understandable) test harness using PyTorch Lightning and Lhoste (speech-specific PyTorch dataloaders) to benchmark various optimizations on the [pure PyTorch (+Lightning) HuBERT pre-training recipe](https://github.com/pytorch/audio/tree/main/examples/self_supervised_learning) provided in torchaudio.
+Download LibriSpeech / LibriLight data for development.
 
-## Road map
+```python
+python download-libris.py
+```
 
-### Stage 1: Supervised training
+## Download model checkpoint (if fine-tuning)
 
-- [x] Add Lhotse's [minimal working example with ESPNet](https://colab.research.google.com/drive/1HKSYPsWx_HoCdrnLpaPdYj5zwlPsM3NH#scrollTo=nxHj0VFq4vxY) to repository
-- [ ] Modify ESPNet recipe for use with PyTorch lightning
-  - [ ] Single GPU ok?
-  - [ ] Multi-GPU ok?
-  - [ ] AMP (fp16/bf16) ok?
-- [ ] Implement HuBERT fine-tuning
+```bash
+gdown 10UHFElbsSZaQmQilfBtaDXzbD9QmKRGa -O tmp/
+```
 
-### Stage 2: Self-supervised training
+## Run training
 
-- [ ] Fold in torchaudio's HuBERT pre-training recipe into harness
+### Fine-tune model
 
-### Stage 3: Optimize self-supervised training recipe
-
-- [ ] Fold in proposals from MelHuBERT/DistilHuBERT/Crammed BERT/microBERT/etc.
+```bash
+python finetune.py \
+  --dataset-path ./data/ \
+  --exp-dir ./tmp/exp_finetune2 \
+  --checkpoint ./tmp/hubert_iter2_checkpoint.pt \
+  --subset 1h \
+  --gpus 2 \
+  --debug \
+  --warmup-updates 2000 \
+  --hold-updates 8000 \
+  --decay-updates 10000 \
+  --max-updates 20000 \
+  --learning-rate 5e-5
+```

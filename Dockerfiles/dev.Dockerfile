@@ -1,4 +1,22 @@
-FROM nvcr.io/nvidia/pytorch:23.04-py3
+# NVIDIA official container with CUDA 11.7 (note pytorch-cuda=11.7 in PyTorch install below)
+# See https://docs.nvidia.com/deeplearning/frameworks/support-matrix/index.html
+FROM nvcr.io/nvidia/pytorch:22.05-py3
+
+# Update container PyTorch from 1.9 to 1.13.1
+RUN conda install pytorch==1.13.1 \
+    torchvision==0.14.1 \
+    torchaudio==0.13.1 \
+    pytorch-cuda=11.7 \
+    -c pytorch \
+    -c nvidia
+
+# Re-build Apex for newer version of PyTorch
+WORKDIR /apex
+
+RUN git clone https://github.com/NVIDIA/apex /apex && \
+    pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" \
+    --global-option="--deprecated_fused_adam" --global-option="--xentropy" \
+    --global-option="--fast_multihead_attn" ./
 
 RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
     && chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
@@ -8,8 +26,6 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | d
     gh \
     rclone
 
-# Staging area (commands yet to be verified)
+RUN pip install pytorch-lightning==1.8.6
 
-# conda install -y pytorch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 pytorch-cuda=11.8 -c pytorch -c nvidia
-
-# pip install pytorch-lightning==2.0.2 lhotse==1.14.0 espnet==202304 chainer==7.8.1
+WORKDIR /workspace

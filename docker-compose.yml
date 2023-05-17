@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  cpu:
+    image: fauxneticien/sslh:dev
+    volumes:
+      - ${PWD}:/workspace
+    working_dir: /workspace
+    entrypoint:
+      - /bin/bash
+    stdin_open: true
+    tty: true
+    # Default shm_size of 64mb is too small for distributed training
+    shm_size: '16gb'
+    # Service must be network host for distributed training
+    network_mode: host
+
+  gpu:
+    image: fauxneticien/sslh:dev
+    volumes:
+      - ${PWD}:/workspace
+    working_dir: /workspace
+    entrypoint:
+      - /bin/bash
+    stdin_open: true
+    tty: true
+    # Default shm_size of 64mb is too small for distributed training
+    shm_size: '16gb'
+    # Service must be network host for distributed training
+    network_mode: host
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
